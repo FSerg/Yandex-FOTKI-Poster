@@ -1,0 +1,102 @@
+<div class="container">
+    <div class="btn btn-default pull-right" ng-click="syncAlbums()">
+        <span aria-hidden="true" class="glyphicon glyphicon-refresh"></span>
+        Get Albums from Yandex
+    </div>
+
+
+    <form class="form-inline pull-left" ng-submit="newAlbum()">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon">New Album</div>
+                <input class="form-control"
+                type="text"
+                placeholder="Title..."
+                ng-model="album.title">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">Add</button>
+    </form>
+
+
+    <div class="clearfix"></div>
+    <hr/>
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            List of albums
+            <div class="pull-right">
+                <input class="search" ng-model="query.title" placeholder="Find..." type="text">
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row albumslist">
+
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="album in AlbumsList | filter:query">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body text-center album">
+                            <!-- Show albums photos -->
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <ul class="gallery">
+                                        <li ng-repeat="mini_photo in album.photos | limitTo: 3">
+                                            <a ng-class="getPicClass($index)" href="/albums/{{album._id}}">
+                                                <img alt="Mini Photo" ng-src="{{mini_photo.images.XXS.href}}"/>
+                                            </a>
+                                        </li>
+	                               </ul>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <span e-cols="25" e-form="rowform" e-name="title" e-rows="5" editable-textarea="album.title">
+                                        <a href="/albums/{{album._id}}">{{album.title}}</a>
+                                    </span>
+
+                                    <form class="form-buttons form-inline" editable-form name="rowform" ng-show="rowform.$visible" onbeforesave="saveAlbum($data, album._id)" shown="inserted == album">
+                                        <button class="btn btn-primary" ng-disabled="rowform.$waiting" type="submit">
+                                            save
+                                        </button>
+                                        <button class="btn btn-default" ng-click="rowform.$cancel()" ng-disabled="rowform.$waiting" type="button">
+                                            cancel
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="panel-footer">
+
+                            <div class="pull-left badge-notify">
+                                <span class="badge progress-bar-success" title="Photos in our service" tooltips>{{album.photos.length}}</span>
+                                <span class="badge progress-bar-info" title="Photos in Yandex" tooltips>{{album.imageCount}}</span>
+                            </div>
+                            &nbsp;
+                            <div aria-label="..." class="btn-group btn-group-xs pull-right album-btn" role="group">
+                                <button class="btn btn-primary" ng-click="rowform.$show()" title="Edit" tooltips type="button">
+                                    <span aria-hidden="true" class="glyphicon glyphicon-edit"></span>
+                                </button>
+                                <button class="btn btn-danger" ng-click="delAlbum($index)" title="Remove" tooltips type="button">
+                                    <span aria-hidden="true" class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <a class="btn btn-info" ng-href="{{ album.link }}" target="_blank" title="Open in Yandex" tooltips type="button">
+                                    <span aria-hidden="true" class="glyphicon glyphicon-eye-open"></span>
+                                </a>
+                            </div>
+
+                        </div> <!-- panel-footer -->
+
+                    </div> <!-- panel-default -->
+
+
+                </div> <!-- ng-repeat -->
+
+            </div>
+        </div>
+    </div>
+</div>

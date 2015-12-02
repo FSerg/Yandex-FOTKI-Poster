@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Yandex FOTKI!</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
+
+    <!-- Optional theme -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" rel="stylesheet"> -->
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <!-- endinject -->
+
+    <!-- Vendors CSS -->
+    <link href="bower_components/angular-growl-v2/build/angular-growl.min.css" rel="stylesheet">
+    <link href="bower_components/angular-tooltips/dist/angular-tooltips.min.css" rel="stylesheet">
+    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
+    <link href="bower_components/ng-dialog/css/ngDialog.min.css" rel="stylesheet">
+    <link href="bower_components/ng-dialog/css/ngDialog-theme-plain.min.css" rel="stylesheet">
+    <link href="bower_components/ng-dialog/css/ngDialog-theme-default.min.css" rel="stylesheet">
+    <link href="bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet">
+
+</head>
+
+<body ng-controller="MainCtrl as main">
+    <div bs-navbar class="navbar navbar-default navbar-static-top" role="navigation">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <span class="glyphicon glyphicon-film"></span>
+                Yandex
+                <strong>FOTKI</strong>
+            </a>
+        </div>
+
+        <!-- main menu -->
+        <ul class="nav navbar-nav">
+            <li data-match-route="/$">
+                <a href="/">Home</a>
+            </li>
+            <li data-match-route="/albums">
+                <a href="/albums">Albums</a>
+            </li>
+        </ul>
+
+        <!-- right menu -->
+        <ul class="nav navbar-nav pull-right">
+
+            <li ng-if="!loggedIn" data-match-route="/login">
+                <a href="/login">Log in</a>
+            </li>
+            <li ng-if="!loggedIn" data-match-route="/signup">
+                <a href="/signup">Sign up</a>
+            </li>
+
+            <li ng-if="loggedIn">
+                <a href="/profile">Hello, {{user.email}}</a>
+            </li>
+            <li ng-if="loggedIn">
+                <a href="#" ng-click="doLogout()">Log out</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- informer -->
+    <div growl></div>
+
+    <div ng-view></div>
+
+    <!-- vendor scripts -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
+
+    <script src="bower_components/angular-growl-v2/build/angular-growl.min.js"></script>
+    <script src="bower_components/angular-tooltips/dist/angular-tooltips.min.js"></script>
+    <script src="bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
+    <script src="bower_components/ng-dialog/js/ngDialog.min.js"></script>
+    <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <!-- Sortable -->
+    <script src="bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+
+    <!-- my scripts -->
+    <!-- inject:js -->
+    <script src="app.js"></script>
+    <script src="album/albumCtrl.js"></script>
+    <script src="album/thumb-directive.js"></script>
+    <script src="albumslist/albumslistCtrl.js"></script>
+    <script src="main/mainCtrl.js"></script>
+    <script src="services/authService.js"></script>
+    <script src="services/fotkiService.js"></script>
+    <script src="services/userService.js"></script>
+    <script src="user/userCtrl.js"></script>
+    <!-- endinject -->
+
+</body>
+
+</html>

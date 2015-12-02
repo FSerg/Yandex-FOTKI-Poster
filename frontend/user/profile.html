@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <h3>Profile</h3>
+      <form name="profileForm" method="post" ng-submit="save()" class="form-sigin" novalidate>
+
+          <!-- EMAIL -->
+          <div class="form-group" ng-class="{ 'has-error' : profileForm.email.$invalid && !profileForm.email.$pristine }">
+              <label>Email</label>
+              <input type="email" name="email" class="form-control" ng-model="userData.email" required >
+              <p ng-show="profileForm.email.$invalid && !profileForm.email.$pristine" class="help-block">Enter a valid email.</p>
+          </div>
+
+          <!-- Ya-name -->
+          <div class="form-group" ng-class="{ 'has-error' : profileForm.yaname.$invalid && !profileForm.yaname.$pristine }">
+              <label>Yandex name (Yandex login)</label>
+              <input type="text" name="yaname" class="form-control" ng-model="userData.yaname" required>
+              <p ng-show="profileForm.yaname.$invalid && !profileForm.yaname.$pristine" class="help-block">Ya name is required.</p>
+          </div>
+
+          <!-- Ya-token -->
+          <div class="form-group">
+              <label>Yandex token</label>
+              <input type="text" name="yatoken" class="form-control" ng-model="userData.yatoken" required>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group" ng-class="{ 'has-error' : profileForm.password.$invalid && !profileForm.password.$pristine }">
+              <label>Password</label>
+              <input type="password" name="password" class="form-control" ng-model="userData.password" required ng-minlength="6">
+              <p ng-show="profileForm.password.$error.minlength" class="help-block">Password is too short.</p>
+          </div>
+
+        <hr />
+        <button class="btn btn-success" type="submit" ng-disabled="profileForm.$invalid">Save</button>
+        <a class="btn btn-info" href="https://oauth.yandex.ru/authorize?response_type=code&client_id=55b76b040b2f4b60a01fa9c7143123a2">Get token</a>
+      </form>
+      <br />
+    </div>
+  </div>
+</div>

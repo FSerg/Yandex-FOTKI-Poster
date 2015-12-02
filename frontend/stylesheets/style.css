@@ -1,0 +1,127 @@
+.search {
+    color: #4f4f4f;
+    padding: 2px;
+    margin-top: -10px;
+    padding-left: 10px;
+    border: 0;
+    border-radius: 15px;
+    width: 250px;
+}
+
+.row .photo {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.row .header-list {
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.number {
+    width: 50px;
+    height: 50px;
+    background-color: #eee;
+    vertical-align: middle;
+}
+
+.drag-icon {
+    font-size: 20px;    
+    padding: 5px;
+}
+
+ul.gallery {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 125px;
+}
+ul.gallery li a {
+    position: absolute;
+    padding: 5px 5px 15px 5px;
+    background: #fff;
+    border: 1px solid #bbb;
+    box-shadow: 2px 2px 5px #bbb;
+    left: 50%;
+}
+ul.gallery li a img {
+    border: 1px solid #ccc;
+}
+ul.gallery li a.pic-0 {
+    z-index: 1;
+    transform: rotate(-10deg) translateX(-70px);
+}
+ul.gallery li a.pic-1 {
+    z-index: 5;
+    transform: rotate(-3deg) translateX(-45px);
+}
+ul.gallery li a.pic-2 {
+    z-index: 3;
+    transform: rotate(4deg) translateX(-20px) translateY(15px);
+}
+ul.gallery li a:hover {
+    z-index: 10;
+    box-shadow: 3px 3px 10px #aaa;
+}
+
+
+.my-drop-zone { border: dotted 3px lightgray; }
+.another-file-over-class { border: dotted 3px green; }
+canvas {
+                /* background-color: #f3f3f3;*/
+                border-radius: 5px;
+                border: 1px solid #bbb;
+                height: 75px;
+                margin: 5px 0 0 5px;
+            }
+
+
+@media (max-width: 767px) {
+    .albumslist>:nth-child(1n+1) {
+        clear: left;
+        /* background-color: red; // just to see if the first item in row is matched */
+    }
+}
+@media (min-width: 768px) and (max-width: 989px) {
+    .albumslist>:nth-child(2n+1) {
+        clear: left;
+    }
+}
+@media (min-width: 990px) and (max-width: 1199px) {
+    .albumslist>:nth-child(3n+1) {
+        clear: left;
+    }
+}
+@media (min-width: 1200px) {
+    .albumslist>:nth-child(4n+1) {
+        clear: left;
+    }
+}
+
+/* add a little bottom space under the images */
+
+
+/*
+@media (max-width: 767px) {
+    .albumslist>.clear:nth-child(6n)::before {
+      content: '';
+      display: table;
+      clear: both;
+    }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+    .albumslist>.clear:nth-child(8n)::before {
+      content: '';
+      display: table;
+      clear: both;
+    }
+}
+@media (min-width: 1200px) {
+    .albumslist>.clear:nth-child(12n)::before {
+      content: '';
+      display: table;
+      clear: both;
+    }
+} */

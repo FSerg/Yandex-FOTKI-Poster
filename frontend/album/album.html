@@ -1,0 +1,194 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <h3>{{Album.title}}
+                <span class="badge">{{Album.imageCount}}</span>
+            </h3>
+            <a ng-href="{{Album.link}}" target="_blank">
+                <small>{{Album.link}}</small>
+            </a>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+
+            <div class="btn btn-success" ng-click="showAdd = !showAdd">
+                <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                Add photos</div>
+
+            <div class="btn btn-default" ng-click="syncPhotos()">
+                <span aria-hidden="true" class="glyphicon glyphicon-refresh"></span>
+                Get photos from Yandex</div>
+        </div>
+
+    </div>
+
+    <hr/>
+
+    <div class="row" ng-if="showAdd" style="margin-bottom: 20px">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div nv-file-drop="" uploader="uploader">
+                <div nv-file-over="" uploader="uploader" over-class="another-file-over-class" class="well my-drop-zone">
+                    Another drop zone with its own settings
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>The queue</h3>
+            <p>Queue length: {{ uploader.queue.length }}</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="50%">Name</th>
+                        <th ng-show="uploader.isHTML5">Size</th>
+                        <th ng-show="uploader.isHTML5">Progress</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in uploader.queue">
+                        <td>
+                            <strong>{{ item.file.name }}</strong>
+                            <!-- Image preview -->
+                            <!--auto height-->
+                            <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
+                            <!--auto width-->
+                            <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                            <!--fixed width and height -->
+                            <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
+                        </td>
+                        <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }}
+                            MB</td>
+                        <td ng-show="uploader.isHTML5">
+                            <div class="progress" style="margin-bottom: 0;">
+                                <div class="progress-bar" ng-style="{ 'width': item.progress + '%' }" role="progressbar"></div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <span ng-show="item.isSuccess">
+                                <i class="glyphicon glyphicon-ok"></i>
+                            </span>
+                            <span ng-show="item.isCancel">
+                                <i class="glyphicon glyphicon-ban-circle"></i>
+                            </span>
+                            <span ng-show="item.isError">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </span>
+                        </td>
+                        <td nowrap>
+                            <button class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess" type="button">
+                                <span class="glyphicon glyphicon-upload"></span>
+                                Upload
+                            </button>
+                            <button class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading" type="button">
+                                <span class="glyphicon glyphicon-ban-circle"></span>
+                                Cancel
+                            </button>
+                            <button class="btn btn-danger btn-xs" ng-click="item.remove()" type="button">
+                                <span class="glyphicon glyphicon-trash"></span>
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <div>
+                    Queue progress:
+                    <div class="progress" style="">
+                        <div class="progress-bar" ng-style="{ 'width': uploader.progress + '%' }" role="progressbar"></div>
+                    </div>
+                </div>
+                <button class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length" type="button">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    Upload all
+                </button>
+                <button class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading" type="button">
+                    <span class="glyphicon glyphicon-ban-circle"></span>
+                    Cancel all
+                </button>
+                <button class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length" type="button">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    Remove all
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                List of photos
+                <div class="pull-right">
+                    <input class="search" ng-model="query.title" placeholder="Поиск по названию фото..." type="text">
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <div class="row header-list">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-4">
+                        <div aria-label="..." class="btn-group btn-group-xs" data-toggle="buttons" role="group">
+                            <button class="btn btn-warning" ng-class="{'active': size == 1}" ng-click="size = 1" type="button">XXS</button>
+                            <button class="btn btn-warning" ng-class="{'active': size == 2}" ng-click="size = 2" type="button">XS</button>
+                            <button class="btn btn-warning" ng-class="{'active': size == 3}" ng-click="size = 3" type="button">S</button>
+                            <button class="btn btn-warning" ng-class="{'active': size == 4}" ng-click="size = 4" type="button">M</button>
+                            <button class="btn btn-warning" ng-class="{'active': size == 5}" ng-click="size = 5" type="button">L</button>
+                        </div>
+                    </div>
+                    <div class="col-xs-5">Title</div>
+                    <div class="col-xs-2">Edit buttons</div>
+                </div>
+
+                <div as-sortable="sortableOptions" ng-model="Photos">
+                <div class="row photo" ng-repeat="Photo in Photos | filter:query | orderBy:'sort_index'" as-sortable-item>
+                    <div class="col-xs-5 text-center">
+                        <div class="pull-left number">{{ $index+1 }}</div>
+                        <div class="pull-left drag-icon" as-sortable-item-handle>
+                        <span aria-hidden="true" class="glyphicon glyphicon-align-justify"></span>
+                        </div>
+                        <img class="img-rounded" ng-if="size == 1" ng-src="{{Photo.images.XXS.href}}">
+                        <img class="img-rounded" ng-if="size == 2" ng-src="{{Photo.images.XS.href}}">
+                        <img class="img-rounded" ng-if="size == 3" ng-src="{{Photo.images.S.href}}">
+                        <img class="img-rounded" ng-if="size == 4" ng-src="{{Photo.images.M.href}}">
+                        <img class="img-rounded" ng-if="size == 5" ng-src="{{Photo.images.L.href}}">
+                    </div>
+                    <div class="col-xs-5">
+                        <span e-cols="50" e-form="rowform" e-name="title" e-required e-rows="5" editable-textarea="Photo.title" ng-bind-html="Photo.title | unsafe"></span>
+                    </div>
+                    <div class="col-xs-2">
+                        <form class="form-buttons form-inline" editable-form name="rowform" ng-show="rowform.$visible" onbeforesave="savePhoto($data, Photo._id)" shown="inserted == Photo">
+                            <button class="btn btn-primary" ng-disabled="rowform.$waiting" type="submit">
+                                save
+                            </button>
+                            <button class="btn btn-default" ng-click="rowform.$cancel()" ng-disabled="rowform.$waiting" type="button">
+                                cancel
+                            </button>
+                        </form>
+
+                        <div class="buttons" ng-show="!rowform.$visible">
+                            <button class="btn btn-primary btn-xs" ng-click="rowform.$show()">
+                                <span aria-hidden="true" class="glyphicon glyphicon-edit"></span>
+                            </button>
+                            <button class="btn btn-danger btn-xs" ng-click="removePhoto($index)">
+                                <span aria-hidden="true" class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <a class="btn btn-info btn-xs" ng-href="{{ Photo.link }}" target="_blank">
+                                <span aria-hidden="true" class="glyphicon glyphicon-eye-open"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+
+            </div> <!-- main panel -->
+        </div>
+    </div>
+</div>
