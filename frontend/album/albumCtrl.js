@@ -4,6 +4,7 @@ angular.module('MyApp')
     function($scope, $http, $routeParams, growl, Fotki, ngDialog, FileUploader, AuthToken) {
 
         $scope.size = 1;
+        $scope.previewSize = 800;
 
         var GetPhotos = function() {
             Fotki.get({
@@ -102,6 +103,63 @@ angular.module('MyApp')
                         growl.error(error.message, { title: "Error saving ordering of photos!", ttl: 5000 });
                     });
             }
+        };
+
+        var addPhotoToPost = function(myPhoto, myIndex, myFormat, previewSize) {
+            var myText = "";
+            var previewUrl = "";
+            var origUrl = myPhoto.images.orig.href;
+            if (angular.isUndefined(myPhoto.images.L)) {
+                previewSize = 100;
+            }
+
+            switch (previewSize) {
+                case 100:
+                    previewUrl = myPhoto.images.XXS.href;
+                    break;
+                case 500:
+                    previewUrl = myPhoto.images.L.href;
+                    break;
+                case 800:
+                    previewUrl = myPhoto.images.XL.href;
+                    break;
+                default:
+                    previewUrl = myPhoto.images.XXS.href;
+            }
+
+            switch (myFormat) {
+                case 'BB':
+                    myText = myIndex + ". " + myPhoto.title + "\n"+
+                    "[url="+origUrl+"]"+"[img]"+previewUrl+".jpg[/img][/url]\n\n";
+                    break;
+                case 'HTML':
+                    myText = myIndex + ". " + myPhoto.title + "<br/>\n"+
+                    "<a href="+origUrl+">"+"<img src="+previewUrl+"></a><br/><br/>\n\n";
+                    break;
+                default:
+
+            }
+            return myText;
+        };
+
+        $scope.makePost = function(myFormat, previewSize) {
+            $scope.postText = "";
+            var myIndex = 1;
+            for (var i = 0; i < $scope.Photos.length; i++) {
+                if ($scope.Photos[i].cheked) {
+                    $scope.postText = $scope.postText +
+                        addPhotoToPost($scope.Photos[i], myIndex, myFormat, previewSize);
+                    myIndex = myIndex + 1;
+                }
+            }
+
+        };
+
+        $scope.markAllPhotos = function(markState) {
+            for (var i = 0; i < $scope.Photos.length; i++) {
+                $scope.Photos[i].cheked = markState;
+            }
+
         };
 
 

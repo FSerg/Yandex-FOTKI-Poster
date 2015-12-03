@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <h3>{{Album.title}}
                 <span class="badge">{{Album.imageCount}}</span>
             </h3>
@@ -10,7 +10,11 @@
             </a>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-right">
+
+            <div class="btn btn-warning" ng-click="showPost = !showPost">
+                <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                Post</div>
 
             <div class="btn btn-success" ng-click="showAdd = !showAdd">
                 <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
@@ -25,12 +29,38 @@
 
     <hr/>
 
+    <div class="row" ng-if="showPost" style="margin-bottom: 20px">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            Preview size: <div aria-label="..." class="btn-group btn-group-xs" data-toggle="buttons" role="group">
+                <button class="btn btn-default" ng-class="{'active': previewSize == 500}" ng-click="previewSize = 500" type="button">
+                    500
+                </button>
+                <button class="btn btn-default" ng-class="{'active': previewSize == 800}" ng-click="previewSize = 800" type="button">
+                    800
+                </button>
+            </div>
+            <span style="margin-left:25px"> </span>
+            Format: <div aria-label="..." class="btn-group btn-group-xs" data-toggle="buttons" role="group">
+                <button class="btn btn-default" ng-click="makePost('BB',previewSize)" type="button">
+                    BB-forum
+                </button>
+                <button class="btn btn-default" ng-click="makePost('HTML',previewSize)" type="button">
+                    HTML
+                </button>
+            </div>
+
+            <textarea style="margin-top: 10px; width: 100%; height: 200px; font-family: monospace;" name="text">{{ postText }}</textarea>
+        </div>
+    </div>
+
     <div class="row" ng-if="showAdd" style="margin-bottom: 20px">
 
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div nv-file-drop="" uploader="uploader">
                 <div nv-file-over="" uploader="uploader" over-class="another-file-over-class" class="well my-drop-zone">
-                    Another drop zone with its own settings
+                    Drops files here!
+                    <input type="file" nv-file-select="" uploader="uploader" multiple="">
                 </div>
             </div>
         </div>
@@ -132,8 +162,17 @@
             <div class="panel-body">
 
                 <div class="row header-list">
-                    <div class="col-xs-1"></div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-5">
+
+                        <div aria-label="..." class="btn-group btn-group-xs" data-toggle="buttons" role="group">
+                            <button class="btn btn-default" ng-click="markAllPhotos(true)" type="button">
+                                <span class="glyphicon glyphicon-check"></span>
+                            </button>
+                            <button class="btn btn-default" ng-click="markAllPhotos(false)" type="button">
+                                <span class="glyphicon glyphicon-unchecked"></span>
+                            </button>
+                        </div>
+
                         <div aria-label="..." class="btn-group btn-group-xs" data-toggle="buttons" role="group">
                             <button class="btn btn-warning" ng-class="{'active': size == 1}" ng-click="size = 1" type="button">XXS</button>
                             <button class="btn btn-warning" ng-class="{'active': size == 2}" ng-click="size = 2" type="button">XS</button>
@@ -149,10 +188,17 @@
                 <div as-sortable="sortableOptions" ng-model="Photos">
                 <div class="row photo" ng-repeat="Photo in Photos | filter:query | orderBy:'sort_index'" as-sortable-item>
                     <div class="col-xs-5 text-center">
-                        <div class="pull-left number">{{ $index+1 }}</div>
+
                         <div class="pull-left drag-icon" as-sortable-item-handle>
                         <span aria-hidden="true" class="glyphicon glyphicon-align-justify"></span>
                         </div>
+
+                        <div class="pull-left number">
+                            {{ $index+1 }}<br/>
+                            <input type="checkbox" ng-model="Photo.cheked">
+                        </div>
+
+
                         <img class="img-rounded" ng-if="size == 1" ng-src="{{Photo.images.XXS.href}}">
                         <img class="img-rounded" ng-if="size == 2" ng-src="{{Photo.images.XS.href}}">
                         <img class="img-rounded" ng-if="size == 3" ng-src="{{Photo.images.S.href}}">
