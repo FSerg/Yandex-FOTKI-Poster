@@ -3,7 +3,22 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "gulp",
+    "start-prod": "NODE_ENV=production node ./dist/backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/FSerg/Yandex-FOTKI-Poster.git"
+  },
+  "keywords": [
+    "docker",
+    "angular",
+    "tutum"
+  ],
+  "author": "Sergey Filkin (fserg)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FSerg/Yandex-FOTKI-Poster/issues"
   },
   "dependencies": {
     "async": "^1.4.2",
@@ -14,13 +29,6 @@
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
     "express": "~4.13.1",
-    "gulp": "^3.9.0",
-    "gulp-clean": "^0.3.1",
-    "gulp-connect": "^2.2.0",
-    "gulp-inject": "^3.0.0",
-    "gulp-jshint": "^2.0.0",
-    "gulp-minify-css": "^1.2.1",
-    "gulp-uglify": "^1.5.1",
     "jshint": "^2.8.0",
     "jsonwebtoken": "^5.4.0",
     "lodash": "^3.10.1",
@@ -31,6 +39,15 @@
   },
   "devDependencies": {
     "browser-sync": "^2.10.0",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-clean": "^0.3.1",
+    "gulp-connect": "^2.2.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-nodemon": "^2.0.4",
+    "gulp-uglify": "^1.5.1",
     "gulp-concat": "^2.6.0",
     "gulp-live-server": "0.0.29",
     "gulp-size": "^2.0.0",

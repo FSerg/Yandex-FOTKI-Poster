@@ -1,7 +1,7 @@
 angular.module('MyApp')
 .controller('MainCtrl', ['$rootScope', '$scope', '$location', 'Auth', 'growl', function($rootScope, $scope, $location, Auth, growl) {
 
-    $scope.testMsg = 'Test message';
+    $scope.testMsg = 'Test message...';
 
     $scope.loggedIn = Auth.isLoggedIn();
 
