@@ -16,10 +16,12 @@ RUN \
     gulp build
 
 # move node_modules to ./dist
-RUN mv node_modules/ dist/
+RUN \
+    mv node_modules/ dist/ \
+    mv frontend/bower_components/ dist/frontend/
 
 # Tell Docker we are going to use this port
-EXPOSE 8080
+EXPOSE 3000
 
 # The command to run our app when the container is run
 CMD ["npm", "run", "start-prod"]
