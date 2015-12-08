@@ -16,9 +16,8 @@ RUN \
     gulp build
 
 # move node_modules to ./dist
-RUN \
-    mv node_modules/ dist/ \
-    mv frontend/bower_components/ dist/frontend/
+RUN mv node_modules/ dist/
+RUN mv frontend/bower_components/ dist/frontend/
 
 # Tell Docker we are going to use this port
 EXPOSE 3000
