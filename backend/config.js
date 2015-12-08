@@ -12,7 +12,7 @@ module.exports = {
   // MongoDB connection options
   database: 'mongodb://' + MONGO_ADDR + ':' + MONGO_PORT + '/yandex-fotki-poster',
 
-  "port": process.env.PORT || 80, // usually 3000, but for Tutum service need 80
+  "port": process.env.PORT || 3000, // usually 3000, but for Tutum service need 80
   "secretKey": process.env.SECRETKEY || "My super secret key"
 
 };

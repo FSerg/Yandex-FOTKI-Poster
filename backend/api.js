@@ -137,28 +137,35 @@ module.exports = function(app, express) {
                 return;
             }
 
-            user.email = req.body.email;
-            user.yaname = req.body.yaname;
-            user.yatoken = req.body.yatoken;
-            user.password = req.body.password;
-
-            user.save(function(err) {
-                if (err) {
-                    console.log("Error save user profile in database (Update): " + err);
-                    res.json({
-                        success: false,
-                        message: err
-                    });
-                    return;
-                }
-
-                var token = createToken(user);
-                res.json({
-                    success: true,
-                    message: 'User has been updated!',
-                    token: token
+            if (!user) {
+                res.send({
+                    message: "User does not exist!"
                 });
-            });
+            }
+            else {
+                user.email = req.body.email;
+                user.yaname = req.body.yaname;
+                user.yatoken = req.body.yatoken;
+                user.password = req.body.password;
+
+                user.save(function(err) {
+                    if (err) {
+                        console.log("Error save user profile in database (Update): " + err);
+                        res.json({
+                            success: false,
+                            message: err
+                        });
+                        return;
+                    }
+
+                    var token = createToken(user);
+                    res.json({
+                        success: true,
+                        message: 'User has been updated!',
+                        token: token
+                    });
+                });
+            } // END Eelse if user finded
 
         });
     }); // END UPDATE USER PROFILE

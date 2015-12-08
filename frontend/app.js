@@ -50,8 +50,9 @@ angular.module('MyApp').config(['growlProvider', function (growlProvider) {
   growlProvider.globalTimeToLive(3000);
 }]);
 
-angular.module('MyApp').filter('unsafe', function($sce) {
-    return function(val) {
-        return $sce.trustAsHtml(val);
-    };
-});
+angular.module('MyApp').filter('unsafe', ['$sce', function($sce) {
+    // return function(val) {
+    //     return $sce.trustAsHtml(val);
+    // };
+    return $sce.trustAsHtml; 
+}]);
