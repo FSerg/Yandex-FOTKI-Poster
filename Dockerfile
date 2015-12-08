@@ -20,7 +20,7 @@ RUN mv node_modules/ dist/
 RUN mv frontend/bower_components/ dist/frontend/
 
 # Tell Docker we are going to use this port
-EXPOSE 3000
+EXPOSE 80
 
 # The command to run our app when the container is run
 CMD ["npm", "run", "start-prod"]
