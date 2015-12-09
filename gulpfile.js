@@ -11,14 +11,14 @@ var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var clean = require('gulp-clean');
 var del = require('del');
-//var runSequence = require('run-sequence');
 var inject = require('gulp-inject');
 var size = require('gulp-size');
 var runSequence = require('run-sequence').use(gulp);
-
 var browserSync = require('browser-sync');
 
-// tasks
+////////////////////
+// DEVELOPMENT TASKS
+
 gulp.task('lint', function() {
   gulp.src(['./frontend/**/*.js', '!./frontend/bower_components/**'])
     .pipe(jshint())
@@ -33,18 +33,70 @@ gulp.task('inject-index', function () {
 
   return target.pipe(inject(sources, {relative: true}))
     .pipe(gulp.dest('./frontend'));
-    //.pipe(gulp.dest('.'));
 });
 
+gulp.task('start-dev', function () {
 
-// gulp.task('clean', function() {
-//     gulp.src('./dist/*')
-//       .pipe(clean({force: true}));
-// });
+    var server = gls.new('backend/server.js');
+    server.start();
+
+    //use gulp.watch to trigger server actions(notify, start or stop)
+    // gulp.watch(['frontend/**/*.css', 'frontend/**/*.html'], function (file) {
+    //     //console.log('ch: '+file);
+    //     server.notify.apply(server, [file]);
+    // });
+
+    // gulp.watch('./frontend/**/*.js').on('change', browserSync.reload);
+    gulp.watch('frontend/index.html', function() {
+        runSequence(
+          ['inject-index'],
+          browserSync.reload
+        );
+    });
+
+    gulp.watch('./backend/**/*.js', function() {
+        server.start.bind(server)();
+    });
+
+});
+
+gulp.task('browser-sync', ['start-dev'], function() {
+    browserSync.init(null, {
+        proxy: "localhost:3000",
+        files: ['frontend/**/*.*', '!frontend/index.html'],
+        port: 5000,
+    });
+});
+
+gulp.task('default', function() {
+    runSequence(
+      ['lint', 'inject-index'],
+      ['browser-sync']
+    );
+});
+
+///////////////////
+// PRODUCTION TASKS
 
 gulp.task('clean', function() {
     return del(['dist/**/*']);
 });
+
+gulp.task('copy-init-files', function () {
+  gulp.src(['./package.json','./bower.json','./.bowerrc','./gulpfile.js'])
+    .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('copy-backend', function () {
+  gulp.src('./backend/**')
+    .pipe(gulp.dest('dist/backend'));
+});
+
+gulp.task('copy-html-files', function () {
+  gulp.src(['./frontend/**/*.html', '!./frontend/bower_components/**'])
+    .pipe(gulp.dest('dist/frontend/'));
+});
+
 
 gulp.task('my-css', function() {
   var opts = {comments:true,spare:true};
@@ -69,75 +121,6 @@ gulp.task('my-js', function() {
 });
 
 
-gulp.task('copy-init-files', function () {
-  gulp.src(['./package.json','./bower.json','./.bowerrc','./gulpfile.js'])
-    .pipe(gulp.dest('dist/'));
-});
-
-gulp.task('copy-backend', function () {
-  gulp.src('./backend/**')
-    .pipe(gulp.dest('dist/backend'));
-});
-
-gulp.task('copy-html-files', function () {
-  gulp.src(['./frontend/**/*.html', '!./frontend/bower_components/**'])
-    .pipe(gulp.dest('dist/frontend/'));
-});
-
-gulp.task('browser-sync', ['start-dev'], function() {
-    browserSync.init(null, {
-        //proxy: "http://192.168.47.130:3000",
-        proxy: "localhost:3000",
-        // files: ["frontend/**/*.*"],
-        files: ['frontend/**/*.*', '!frontend/index.html'],
-        port: 5000,
-
-    });
-});
-
-gulp.task('start-dev', function () {
-    //1. run your script as a server
-    var server = gls.new('backend/server.js');
-    server.start();
-
-    //use gulp.watch to trigger server actions(notify, start or stop)
-    // gulp.watch(['frontend/**/*.css', 'frontend/**/*.html'], function (file) {
-    //     //console.log('ch: '+file);
-    //     server.notify.apply(server, [file]);
-    // });
-
-    // gulp.watch('./frontend/**/*.js').on('change', browserSync.reload);
-    gulp.watch('frontend/index.html', function() {
-        runSequence(
-          ['inject-index'],
-          browserSync.reload
-        );
-    });
-
-    gulp.watch('./backend/**/*.js', function() {
-        server.start.bind(server)();
-    });
-
-});
-
-gulp.task('start-prod', function () {
-    nodemon({
-      script: './dist/backend/server.js',
-      env: {NODE_ENV: 'production'},
-      watch: ['!*.*'],
-      quiet: true
-    });
-});
-
-
-// default task
-gulp.task('default', function() {
-    runSequence(
-      ['lint', 'inject-index'],
-      ['browser-sync']
-    );
-});
-
 gulp.task('inject-index-build', function () {
   var target = gulp.src('./dist/frontend/index.html');
   var sources = gulp.src(['./dist/frontend/style/style.min.css', './dist/frontend/app.min.js']);
@@ -152,4 +135,13 @@ gulp.task('build', function() {
       ['lint', 'my-css', 'my-js', 'copy-html-files', 'copy-init-files', 'copy-backend'],
       'inject-index-build'
     );
+});
+
+gulp.task('start-prod', function () {
+    nodemon({
+      script: './dist/backend/server.js',
+      env: {NODE_ENV: 'production'},
+      watch: ['!*.*'],
+      quiet: true
+    });
 });

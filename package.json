@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "gulp",
-    "start-prod": "NODE_ENV=production PORT=80 node ./dist/backend/server.js"    
+    "start-prod": "NODE_ENV=production PORT=80 node ./dist/backend/server.js"
   },
   "repository": {
     "type": "git",
@@ -41,7 +41,6 @@
     "browser-sync": "^2.10.0",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
-    "gulp-clean": "^0.3.1",
     "gulp-connect": "^2.2.0",
     "gulp-inject": "^3.0.0",
     "gulp-jshint": "^2.0.0",
