@@ -7,12 +7,12 @@ var bodyParser = require('../node_modules/body-parser');
 var config = require('./config');
 
 mongoose.connect(config.database, function(err) {
-  if (err) {
-    console.log(err);
-  }
-  else {
-    console.log("Connected to DB (mongolab)!");
-  }
+    console.log('Connection string: '+config.database); // for debugging only
+    if (err) {
+        console.log(err);
+    } else {
+        console.log("Connected to DB (mongolab)!");
+    }
 });
 
 
