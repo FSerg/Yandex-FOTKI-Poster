@@ -8,7 +8,6 @@ WORKDIR /home/app
 ADD . /home/app
 
 # Install dependencies and generate production files
-RUN npm update -g npm
 RUN \
     npm install -g bower gulp && \
     npm install && \
