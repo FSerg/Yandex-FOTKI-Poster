@@ -1,7 +1,7 @@
 
 // Production specific configuration
 // =================================
-var MONGODB_ADDR = process.env.MONGODB_ENV_TUTUM_IP_ADDRESS || process.env.MONGODB_ADDRESS || 'localhost';
+var MONGODB_ADDR = process.env.MONGODB_PORT_27017_TCP_ADDR || process.env.MONGODB_ADDRESS || 'localhost';
 var MONGODB_PORT = process.env.MONGODB_PORT || 27017;
 var MONGODB_USER = process.env.MONGODB_USER || 'admin';
 var MONGODB_PASS = process.env.MONGODB_ENV_MONGODB_PASS || process.env.MONGODB_PASS || '123456';
