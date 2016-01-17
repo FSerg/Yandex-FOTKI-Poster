@@ -6,7 +6,8 @@ var logger = require('../node_modules/morgan');
 var bodyParser = require('../node_modules/body-parser');
 var config = require('./config');
 
-mongoose.connect(config.database, {auth: {authdb: 'admin'}}, function(err) {
+//mongoose.connect(config.database, {auth: {authdb: 'admin'}}, function(err) {
+mongoose.connect(config.database, function(err) {
     console.log('Connection string: '+config.database); // for debugging only
     if (err) {
         console.log(err);
